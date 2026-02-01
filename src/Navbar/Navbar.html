@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!-- Following code has been commented with appropriate comments for your reference. -->
+<html lang="en">
+<head>
+    <!-- Set the character encoding to UTF-8 -->
+    <meta charset="UTF-8">
+    <!-- Set the viewport for responsiveness -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Link the external stylesheet for styling -->
+    <link rel="stylesheet" href="./Navbar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+    <nav>
+        <!-- Navigation logo section -->
+        <div class="nav__logo">
+          <!-- Link to the home page -->
+          <a href="/">
+            #Helseappen
+          </a>
+        </div>
+        <!-- Navigation icon section with an onClick event listener -->
+        <div class="nav__icon" onClick={handleClick}>
+          <!-- Font Awesome icon for bars (hamburger menu) -->
+          <i class="fa fa-times fa fa-bars"></i>
+        </div>
+
+        <!-- Unordered list for navigation links with 'active' class -->
+        <ul class="nav__links active">
+          <!-- List item for the 'Appointments' link -->
+          <li class="link">
+            <a href="#">Appointments</a>
+          </li>
+          <!-- List item for the 'Reviews' link -->
+          <li class="link">
+            <a href="#">Reviews</a>
+          </li>
+          <!-- List item for the 'Sign Up' link -->
+          <li class="link">
+            <a href="../Sign_Up//Sign_Up.html">Sign up</a>
+          </li>
+          <!-- List item for the 'Login' link with a button -->
+          <li class="link">
+            <a href="../Login/Login.html">
+              <button class="btn-login">Login</button>
+            </a>
+          </li>
+        </ul>
+    </nav>
+    <script>
+        // Define the handleClick function to toggle the navigation menu
+        function handleClick() {
+            const navLinks = document.querySelector(".nav__links");
+            const navIcon = document.querySelector(".nav__icon i");
+            
+            // Toggle the 'active' class on the navigation links
+            navLinks.classList.toggle("active");
+            
+            // Toggle the Font Awesome icons (bars and times)
+            if (navLinks.classList.contains("active")) {
+                navIcon.classList.remove("fa-bars");
+                navIcon.classList.add("fa-times");
+            } else {
+                navIcon.classList.remove("fa-times");
+                navIcon.classList.add("fa-bars");
+            }
+        }
+    </script>
+</body>
+</html>

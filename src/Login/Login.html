@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Following code has been commented with appropriate comments for your reference. -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="./Login.css"> <!-- Linking external CSS file -->
+</head>
+<body>
+    <div class="signup-container">
+        <!-- Left side with image -->
+        <div class="signup-image">
+        </div>
+        
+        <!-- Right side with form -->
+        <div class="signup-form-container">
+            <h1>Login</h1>
+            
+            <p class="login-link">
+                Are you a new member? <a href="../Sign_Up/Sign_Up.html">Sign up here</a>
+            </p>
+            
+            <form class="signup-form">
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" name="email" id="email" required class="form-control" placeholder="fridjof-nansen@polarmuseet.no" />
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password" required class="form-control" placeholder="••••••••" />
+                </div>
+
+                <div class="btn-group">
+                    <button type="reset" class="btn btn-reset">Reset</button>
+                    <button type="submit" class="btn btn-submit">Submit</button>
+                </div>
+                
+                <p class="forgot-password">
+                    <a href="#">Forgot your password?</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
