@@ -1,221 +1,144 @@
-import React, { useState } from "react";
-import "./Sign_Up.css";
+// Following code has been commented with appropriate comments for your reference.
+import React, { useState } from 'react';
+import './Sign_Up.css';
+import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../../config';
 
-function Sign_Up() {
-  const [form, setForm] = useState({
-    role: "patient",
-    name: "",
-    phone: "",
-    email: "",
-    password: "",
-  });
+// Function component for Sign Up form
+const Sign_Up = () => {
+    // State variables using useState hook
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
+    const [showerr, setShowerr] = useState(''); // State to show error messages
+    const navigate = useNavigate(); // Navigation hook from react-router
 
-  const [errors, setErrors] = useState({});
+    // Function to handle form submission
+    const register = async (e) => {
+        e.preventDefault(); // Prevent default form submission
 
-  const validate = (values) => {
-    const nextErrors = {};
+        // API Call to register user
+        const response = await fetch(`${API_URL}/api/auth/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                name: name,
+                email: email,
+                password: password,
+                phone: phone,
+            }),
+        });
 
-    // Role
-    if (!values.role) {
-      nextErrors.role = "Please select a role.";
-    }
+        const json = await response.json(); // Parse the response JSON
 
-    // Name (basic: required, min length, allowed chars)
-    const name = values.name.trim();
-    if (!name) {
-      nextErrors.name = "Name is required.";
-    } else if (name.length < 2) {
-      nextErrors.name = "Name must be at least 2 characters.";
-    } else if (!/^[a-zA-ZÀ-ž' -]+$/.test(name)) {
-      nextErrors.name = "Name contains invalid characters.";
-    }
+        if (json.authtoken) {
+            // Store user data in session storage
+            sessionStorage.setItem("auth-token", json.authtoken);
+            sessionStorage.setItem("name", name);
+            sessionStorage.setItem("phone", phone);
+            sessionStorage.setItem("email", email);
 
-    // Phone (required + simple validation)
-    const phone = values.phone.trim();
-    if (!phone) {
-      nextErrors.phone = "Phone number is required.";
-    } else {
-      // Allow +, spaces, -, parentheses; require 8+ digits total
-      const digitsOnly = phone.replace(/\D/g, "");
-      if (digitsOnly.length < 8) {
-        nextErrors.phone = "Phone number must contain at least 8 digits.";
-      } else if (!/^[0-9+() -]+$/.test(phone)) {
-        nextErrors.phone = "Phone number format looks invalid.";
-      }
-    }
+            // Redirect user to home page
+            navigate("/");
+            window.location.reload(); // Refresh the page
+        } else {
+            if (json.errors) {
+                for (const error of json.errors) {
+                    setShowerr(error.msg); // Show error messages
+                }
+            } else {
+                setShowerr(json.error);
+            }
+        }
+    };
 
-    // Email (required + format)
-    const email = values.email.trim();
-    if (!email) {
-      nextErrors.email = "E-mail is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-      nextErrors.email = "Please enter a valid e-mail address.";
-    }
+    // JSX to render the Sign Up form
+    return (
+        <>
+            <div className="container" style={{ marginTop: '5%' }}>
+                <div className="signup-grid">
+                    <div className="signup-form">
+                        <form method="POST" onSubmit={register}>
 
-    // Password (required + basic strength)
-    const password = values.password;
-    if (!password) {
-      nextErrors.password = "Password is required.";
-    } else if (password.length < 8) {
-      nextErrors.password = "Password must be at least 8 characters.";
-    } else if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
-      nextErrors.password = "Password must include at least one letter and one number.";
-    }
+                            <div className="form-group">
+                                <label htmlFor="email">Email</label>
+                                <input
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    type="email"
+                                    name="email"
+                                    id="email"
+                                    className="form-control"
+                                    placeholder="Enter your email"
+                                    aria-describedby="helpId"
+                                />
+                            </div>
 
-    return nextErrors;
-  };
+                            <div className="form-group">
+                                <label htmlFor="name">Name</label>
+                                <input
+                                    value={name}
+                                    type="text"
+                                    onChange={(e) => setName(e.target.value)}
+                                    name="name"
+                                    id="name"
+                                    className="form-control"
+                                    placeholder="Enter your name"
+                                    aria-describedby="helpId"
+                                />
+                            </div>
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+                            <div className="form-group">
+                                <label htmlFor="phone">Phone</label>
+                                <input
+                                    value={phone}
+                                    onChange={(e) => setPhone(e.target.value)}
+                                    type="tel"
+                                    name="phone"
+                                    id="phone"
+                                    className="form-control"
+                                    placeholder="Enter your phone number"
+                                    aria-describedby="helpId"
+                                />
+                            </div>
 
-    setForm((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+                            <div className="form-group">
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    type="password"
+                                    name="password"
+                                    id="password"
+                                    className="form-control"
+                                    placeholder="Enter your password"
+                                    aria-describedby="helpId"
+                                />
+                            </div>
 
-    // Optional: live-validate as user types
-    setErrors((prev) => {
-      const updated = { ...prev };
-      const newValues = { ...form, [name]: value };
-      const nextErrors = validate(newValues);
+                            {showerr && (
+                                <div className="err" style={{ color: 'red' }}>
+                                    {showerr}
+                                </div>
+                            )}
 
-      // Keep only the current field error updated (less noisy)
-      if (nextErrors[name]) updated[name] = nextErrors[name];
-      else delete updated[name];
+                            <div className="btn-group">
+                                <button type="submit" className="btn btn-submit">
+                                    Register
+                                </button>
+                            </div>
 
-      return updated;
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const nextErrors = validate(form);
-    setErrors(nextErrors);
-
-    if (Object.keys(nextErrors).length > 0) {
-      return; // Block submit
-    }
-
-    // ✅ Form is valid — replace this with API call / navigation
-    alert("Signup details look valid ✅");
-  };
-
-  const handleReset = () => {
-    setForm({
-      role: "patient",
-      name: "",
-      phone: "",
-      email: "",
-      password: "",
-    });
-    setErrors({});
-  };
-
-  return (
-    <>
-      <div className="signup-container">
-        {/* Left side with image */}
-        <div className="signup-image"></div>
-
-        {/* Right side with form */}
-        <div className="signup-form-container">
-          <h1>Sign up</h1>
-
-          <p className="login-link">
-            Already a member? <a href="../Login/Login.html">Login</a>
-          </p>
-
-          <form className="signup-form" onSubmit={handleSubmit} onReset={handleReset} noValidate>
-            <div className="form-group">
-              <label htmlFor="role">Role</label>
-              <select
-                name="role"
-                id="role"
-                className="form-control"
-                value={form.role}
-                onChange={handleChange}
-                aria-invalid={!!errors.role}
-              >
-                <option value="patient">Patient</option>
-                <option value="doctor">Doctor</option>
-              </select>
-              {errors.role && <small className="error-text">{errors.role}</small>}
+                        </form>
+                    </div>
+                </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                name="name"
-                id="name"
-                className="form-control"
-                placeholder="Fridjof Nansen"
-                value={form.name}
-                onChange={handleChange}
-                aria-invalid={!!errors.name}
-              />
-              {errors.name && <small className="error-text">{errors.name}</small>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="phone">Phone</label>
-              <input
-                type="tel"
-                name="phone"
-                id="phone"
-                className="form-control"
-                placeholder="+47 22 22 22 22"
-                value={form.phone}
-                onChange={handleChange}
-                aria-invalid={!!errors.phone}
-              />
-              {errors.phone && <small className="error-text">{errors.phone}</small>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="email">E-mail</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                className="form-control"
-                placeholder="fridjof-nansen@polarmuseet.no"
-                value={form.email}
-                onChange={handleChange}
-                aria-invalid={!!errors.email}
-              />
-              {errors.email && <small className="error-text">{errors.email}</small>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                className="form-control"
-                placeholder="••••••••"
-                value={form.password}
-                onChange={handleChange}
-                aria-invalid={!!errors.password}
-              />
-              {errors.password && <small className="error-text">{errors.password}</small>}
-            </div>
-
-            <div className="btn-group">
-              <button type="reset" className="btn btn-reset">
-                Reset
-              </button>
-              <button type="submit" className="btn btn-submit">
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </>
-  );
-}
+            {/* Note: Sign up role is not stored in the database. */}
+        </>
+    );
+};
 
 export default Sign_Up;

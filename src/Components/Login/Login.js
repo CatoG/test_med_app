@@ -48,8 +48,14 @@ function Login() {
       return; // Block submit
     }
 
-    // ✅ Login details valid — replace with API call
+    // ✅ Treat the popup as a successful login (dummy)
+    sessionStorage.setItem("auth-token", "dummy-token");
+    sessionStorage.setItem("email", form.email.trim());
+
     alert("Login successful ✅");
+
+    // Reload so Navbar reads sessionStorage and shows Logout
+    window.location.reload();
   };
 
   const handleReset = () => {
