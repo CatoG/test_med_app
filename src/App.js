@@ -7,8 +7,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Import custom Navbar component
 import Navbar from "./Components/Navbar/Navbar";
 
-// Import landing page component
+// Import page components
 import Landing_Page from "./Components/Landing_Page/Landing_Page";
+import Login from "./Components/Login/Login";
+import Sign_Up from "./Components/Sign_Up/Sign_Up";
 
 // Function component for the main App
 function App() {
@@ -21,6 +23,12 @@ function App() {
       <Routes>
         {/* Home route */}
         <Route path="/" element={<Landing_Page />} />
+
+        {/* Login route */}
+        <Route path="/login" element={<Login />} />
+
+        {/* Sign Up route */}
+        <Route path="/signup" element={<Sign_Up />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./Navbar.css";
 
 function Navbar() {
   const [active, setActive] = useState(true);
 
-  // handleClick is defined BEFORE return (correct React pattern)
   const handleClick = () => {
     setActive(!active);
   };
@@ -14,7 +14,7 @@ function Navbar() {
       <nav>
         {/* Navigation logo section */}
         <div className="nav__logo">
-          <a href="/">#Helseappen</a>
+          <Link to="/">#Helseappen</Link>
         </div>
 
         {/* Navigation icon section */}
@@ -33,13 +33,13 @@ function Navbar() {
           </li>
 
           <li className="link">
-            <a href="../Sign_Up/Sign_Up.html">Sign up</a>
+            <Link to="/signup">Sign up</Link>
           </li>
 
           <li className="link">
-            <a href="../Login/Login.html">
+            <Link to="/login">
               <button className="btn-login">Login</button>
-            </a>
+            </Link>
           </li>
         </ul>
       </nav>
