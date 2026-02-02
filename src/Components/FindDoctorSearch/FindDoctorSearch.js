@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './FindDoctorSearch.css';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import DoctorCard from '../DoctorCard/DoctorCard';
 
 
 const initSpeciality = [
@@ -11,13 +12,33 @@ const FindDoctorSearch = () => {
     const [doctorResultHidden, setDoctorResultHidden] = useState(true);
     const [searchDoctor, setSearchDoctor] = useState('');
     const [specialities, setSpecialities] = useState(initSpeciality);
+    const [doctors, setDoctors] = useState([]);
+    const [filteredDoctors, setFilteredDoctors] = useState([]);
+    const [isSearched, setIsSearched] = useState(false);
     const navigate = useNavigate();
+    
+    useEffect(() => {
+        // Fetch doctors data
+        fetch('https://api.npoint.io/9a5543d36f1460da2f63')
+        .then(res => res.json())
+        .then(data => {
+            setDoctors(data);
+        })
+        .catch(err => console.log(err));
+    }, []);
+    
     const handleDoctorSelect = (speciality) => {
         setSearchDoctor(speciality);
         setDoctorResultHidden(true);
-        navigate(`/instant-consultation?speciality=${speciality}`);
-        window.location.reload();
+        
+        // Filter doctors by speciality
+        const filtered = doctors.filter(doctor => 
+            doctor.speciality.toLowerCase() === speciality.toLowerCase()
+        );
+        setFilteredDoctors(filtered);
+        setIsSearched(true);
     }
+    
     return (
         <div className='finddoctor'>
             <center>
@@ -41,6 +62,27 @@ const FindDoctorSearch = () => {
                         </div>
                     </div>
                 </div>
+                
+                {isSearched && (
+                    <div className="search-results-container" style={{marginTop: '2rem'}}>
+                        <h2>{filteredDoctors.length} doctors are available</h2>
+                        <h3>Book appointments with minimum wait-time & verified doctor details</h3>
+                        {filteredDoctors.length > 0 ? (
+                            filteredDoctors.map(doctor => (
+                                <DoctorCard 
+                                    key={doctor.name} 
+                                    name={doctor.name}
+                                    speciality={doctor.speciality}
+                                    experience={doctor.experience}
+                                    ratings={doctor.ratings}
+                                    profilePic={doctor.profilePic}
+                                />
+                            ))
+                        ) : (
+                            <p>No doctors found.</p>
+                        )}
+                    </div>
+                )}
             </center>
         </div>
     )
