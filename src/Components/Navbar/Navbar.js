@@ -41,6 +41,10 @@ function Navbar() {
         {/* Navigation links */}
         <ul className={`nav__links ${active ? "active" : ""}`}>
           <li className="link">
+            <Link to="/search/doctors">Booking</Link>
+          </li>
+
+          <li className="link">
             <a href="#">Appointments</a>
           </li>
 
