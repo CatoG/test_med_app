@@ -18,6 +18,7 @@ const InstantConsultation = () => {
                 const filtered = data.filter(doctor => doctor.speciality.toLowerCase() === searchParams.get('speciality').toLowerCase());
 
                 setFilteredDoctors(filtered);
+                setIsSearched(true);
             } else {
                 setFilteredDoctors([]);
                 setIsSearched(false);
