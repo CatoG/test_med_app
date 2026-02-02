@@ -15,13 +15,9 @@ const InstantConsultation = () => {
         .then(res => res.json())
         .then(data => {
             if (searchParams.get('speciality')) {
-                // window.reload()
                 const filtered = data.filter(doctor => doctor.speciality.toLowerCase() === searchParams.get('speciality').toLowerCase());
 
                 setFilteredDoctors(filtered);
-                
-                setIsSearched(true);
-                window.reload()
             } else {
                 setFilteredDoctors([]);
                 setIsSearched(false);
@@ -46,7 +42,6 @@ const InstantConsultation = () => {
                 
             setFilteredDoctors(filtered);
             setIsSearched(true);
-            window.location.reload()
         }
     };
     const navigate = useNavigate();
