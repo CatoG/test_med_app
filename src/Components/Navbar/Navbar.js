@@ -45,6 +45,10 @@ function Navbar() {
           </li>
 
           <li className="link">
+            <Link to="/instant-consultation">Instant Consultation</Link>
+          </li>
+
+          <li className="link">
             <a href="#">Reviews</a>
           </li>
 
