@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 
+// AppointmentForm component with date and time slot booking
 const AppointmentForm = ({ doctorName, doctorSpeciality, onSubmit }) => {
     const [name, setName] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [date, setDate] = useState('');
     const [selectedSlot, setSelectedSlot] = useState('');
+  
+    console.log('AppointmentForm loaded - with date and time fields');
   
     // Available time slots
     const timeSlots = [
