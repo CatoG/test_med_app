@@ -1,8 +1,10 @@
 import React from "react"; // Importing the necessary modules from React library
+import { useNavigate } from "react-router-dom"; // Importing navigation hook
 import "./Landing_Page.css"; // Importing the CSS styles for the Landing_Page component
 
 // Defining the Function component Landing_Page
 const Landing_Page = () => {
+  const navigate = useNavigate();
   return (
     <section className="hero-section">
       {/* Creating a section with class name 'hero-section' */}
@@ -33,11 +35,8 @@ const Landing_Page = () => {
             quae ducimus. Suscipit omnis quibusdam non cum rem voluptatem!
           </h4>
 
-          <a href="#services">
-            {/* Creating a hyperlink to jump to the 'services' section */}
-            <button className="button">Get Started</button>
-            {/* Creating a button with class name 'button' */}
-          </a>
+          <button className="button" onClick={() => navigate('/search/doctors')}>Get Started</button>
+          {/* Creating a button with class name 'button' that navigates to find doctor search */}
         </div>
       </div>
     </section>
