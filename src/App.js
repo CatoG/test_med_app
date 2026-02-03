@@ -7,6 +7,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Import custom Navbar component
 import Navbar from "./Components/Navbar/Navbar";
 
+// Import Notification component
+import Notification from "./Components/Notification/Notification";
+
 // Import page components
 import Landing_Page from "./Components/Landing_Page/Landing_Page";
 import Login from "./Components/Login/Login";
@@ -18,26 +21,28 @@ import BookingConsultation from "./Components/BookingConsultation";
 function App() {
   return (
     <BrowserRouter>
-      {/* Display the Navbar component */}
-      <Navbar />
+      <Notification>
+        {/* Display the Navbar component */}
+        <Navbar />
 
-      {/* Set up the Routes for different pages */}
-      <Routes>
-        {/* Home route */}
-        <Route path="/" element={<Landing_Page />} />
+        {/* Set up the Routes for different pages */}
+        <Routes>
+          {/* Home route */}
+          <Route path="/" element={<Landing_Page />} />
 
-        {/* Login route */}
-        <Route path="/login" element={<Login />} />
+          {/* Login route */}
+          <Route path="/login" element={<Login />} />
 
-        {/* Sign Up route */}
-        <Route path="/signup" element={<Sign_Up />} />
+          {/* Sign Up route */}
+          <Route path="/signup" element={<Sign_Up />} />
 
-        {/* Booking Consultation route */}
-        <Route path="/search/doctors" element={<BookingConsultation />} />
+          {/* Booking Consultation route */}
+          <Route path="/search/doctors" element={<BookingConsultation />} />
 
-        {/* Instant Consultation route */}
-        <Route path="/instant-consultation" element={<InstantConsultation />} />
-      </Routes>
+          {/* Instant Consultation route */}
+          <Route path="/instant-consultation" element={<InstantConsultation />} />
+        </Routes>
+      </Notification>
     </BrowserRouter>
   );
 }
