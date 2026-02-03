@@ -13,26 +13,44 @@ const Notification = ({ children }) => {
 
   // useEffect hook to perform side effects in the component
   useEffect(() => {
-    // Retrieve stored username, doctor data, and appointment data from sessionStorage and localStorage
-    const storedUsername = sessionStorage.getItem('email');
-    const storedDoctorData = JSON.parse(localStorage.getItem('doctorData'));
-    const storedAppointmentData = JSON.parse(localStorage.getItem(storedDoctorData?.name));
+    // Function to check and update appointment data
+    const checkAppointmentData = () => {
+      // Retrieve stored username, doctor data, and appointment data from sessionStorage and localStorage
+      const storedUsername = sessionStorage.getItem('email');
+      const storedDoctorData = JSON.parse(localStorage.getItem('doctorData'));
+      const storedAppointmentData = JSON.parse(localStorage.getItem(storedDoctorData?.name));
 
-    // Set isLoggedIn state to true and update username if storedUsername exists
-    if (storedUsername) {
-      setIsLoggedIn(true);
-      setUsername(storedUsername);
-    }
+      console.log('Checking notification data:', { 
+        storedUsername, 
+        storedDoctorData, 
+        storedAppointmentData 
+      });
 
-    // Set doctorData state if storedDoctorData exists
-    if (storedDoctorData) {
-      setDoctorData(storedDoctorData);
-    }
+      // Set isLoggedIn state to true and update username if storedUsername exists
+      if (storedUsername) {
+        setIsLoggedIn(true);
+        setUsername(storedUsername);
+      }
 
-    // Set appointmentData state if storedAppointmentData exists
-    if (storedAppointmentData) {
-      setAppointmentData(storedAppointmentData);
-    }
+      // Set doctorData state if storedDoctorData exists
+      if (storedDoctorData) {
+        setDoctorData(storedDoctorData);
+      }
+
+      // Set appointmentData state if storedAppointmentData exists
+      if (storedAppointmentData) {
+        setAppointmentData(storedAppointmentData);
+      }
+    };
+
+    // Check initially
+    checkAppointmentData();
+
+    // Set up interval to check for updates every 1 second
+    const interval = setInterval(checkAppointmentData, 1000);
+
+    // Cleanup interval on unmount
+    return () => clearInterval(interval);
   }, []); // Empty dependency array ensures useEffect runs only once after initial render
 
   // Return JSX elements to display Navbar, children components, and appointment details if user is logged in
