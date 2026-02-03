@@ -10,6 +10,15 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
   const [showModal, setShowModal] = useState(false);
   const [appointments, setAppointments] = useState([]);
 
+  // Load appointments from localStorage on component mount
+  useEffect(() => {
+    const storedAppointment = localStorage.getItem(name);
+    if (storedAppointment) {
+      const appointmentData = JSON.parse(storedAppointment);
+      setAppointments([{ id: uuidv4(), ...appointmentData }]);
+    }
+  }, [name]);
+
   const handleBooking = () => {
     setShowModal(true);
   };
@@ -17,6 +26,15 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
   const handleCancel = (appointmentId) => {
     const updatedAppointments = appointments.filter((appointment) => appointment.id !== appointmentId);
     setAppointments(updatedAppointments);
+    
+    // Remove appointment from localStorage
+    localStorage.removeItem(name);
+    
+    // If this was the last appointment, clear doctor data
+    const storedDoctorData = JSON.parse(localStorage.getItem('doctorData'));
+    if (storedDoctorData && storedDoctorData.name === name) {
+      localStorage.removeItem('doctorData');
+    }
   };
 
   const handleFormSubmit = (appointmentData) => {
