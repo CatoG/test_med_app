@@ -1,0 +1,87 @@
+/* Appointment Card Container */
+.appointment-card {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    width: 400px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    padding: 24px;
+    z-index: 1000;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Appointment Card Content */
+.appointment-card__content {
+    color: white;
+}
+
+/* Appointment Card Title */
+.appointment-card__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
+    color: white;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    padding-bottom: 12px;
+}
+
+/* Appointment Card Message */
+.appointment-card__message {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 12px 0;
+    color: white;
+}
+
+.appointment-card__message strong {
+    display: inline-block;
+    min-width: 180px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .appointment-card {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+        top: 70px;
+    }
+    
+    .appointment-card__title {
+        font-size: 20px;
+    }
+    
+    .appointment-card__message {
+        font-size: 14px;
+    }
+    
+    .appointment-card__message strong {
+        min-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .appointment-card {
+        padding: 16px;
+    }
+    
+    .appointment-card__message strong {
+        display: block;
+        margin-bottom: 4px;
+    }
+}
