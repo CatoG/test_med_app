@@ -30,16 +30,23 @@ const Notification = ({ children }) => {
       if (storedUsername) {
         setIsLoggedIn(true);
         setUsername(storedUsername);
+      } else {
+        setIsLoggedIn(false);
+        setUsername("");
       }
 
-      // Set doctorData state if storedDoctorData exists
+      // Set doctorData state if storedDoctorData exists, otherwise clear it
       if (storedDoctorData) {
         setDoctorData(storedDoctorData);
+      } else {
+        setDoctorData(null);
       }
 
-      // Set appointmentData state if storedAppointmentData exists
+      // Set appointmentData state if storedAppointmentData exists, otherwise clear it
       if (storedAppointmentData) {
         setAppointmentData(storedAppointmentData);
+      } else {
+        setAppointmentData(null);
       }
     };
 
