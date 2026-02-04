@@ -14,52 +14,33 @@ function GiveReviews() {
     rating: 0
   });
 
-  // Appointment history state - Load from localStorage
-  const [appointmentHistory, setAppointmentHistory] = useState(() => {
-    const allAppointments = JSON.parse(localStorage.getItem('allAppointments') || '[]');
-    const reviewData = JSON.parse(localStorage.getItem('reviewData') || '{}');
-    
-    // Group by doctor to avoid duplicates
-    const doctorMap = new Map();
-    allAppointments.forEach(apt => {
-      if (!doctorMap.has(apt.doctorName)) {
-        doctorMap.set(apt.doctorName, {
-          id: apt.id,
-          doctorName: apt.doctorName,
-          specialty: apt.doctorSpeciality,
-          reviewed: reviewData[apt.doctorName]?.reviewed || false,
-          rating: reviewData[apt.doctorName]?.rating || 0
-        });
-      }
-    });
-    
-    return Array.from(doctorMap.values());
-  });
+  // Appointment history state - Load all doctors from API
+  const [appointmentHistory, setAppointmentHistory] = useState([]);
 
-  // Reload appointments when component mounts or when returning to page
+  // Load all doctors and merge with review data
   useEffect(() => {
-    const loadAppointments = () => {
-      const allAppointments = JSON.parse(localStorage.getItem('allAppointments') || '[]');
-      const reviewData = JSON.parse(localStorage.getItem('reviewData') || '{}');
-      
-      // Group by doctor to avoid duplicates
-      const doctorMap = new Map();
-      allAppointments.forEach(apt => {
-        if (!doctorMap.has(apt.doctorName)) {
-          doctorMap.set(apt.doctorName, {
-            id: apt.id,
-            doctorName: apt.doctorName,
-            specialty: apt.doctorSpeciality,
-            reviewed: reviewData[apt.doctorName]?.reviewed || false,
-            rating: reviewData[apt.doctorName]?.rating || 0
-          });
-        }
-      });
-      
-      setAppointmentHistory(Array.from(doctorMap.values()));
+    const loadDoctors = async () => {
+      try {
+        const response = await fetch('https://api.npoint.io/9a5543d36f1460da2f63');
+        const doctors = await response.json();
+        const reviewData = JSON.parse(localStorage.getItem('reviewData') || '{}');
+        
+        // Map doctors with review data
+        const doctorsWithReviews = doctors.map((doctor, index) => ({
+          id: index + 1,
+          doctorName: doctor.name,
+          specialty: doctor.speciality,
+          reviewed: reviewData[doctor.name]?.reviewed || false,
+          rating: reviewData[doctor.name]?.rating || 0
+        }));
+        
+        setAppointmentHistory(doctorsWithReviews);
+      } catch (error) {
+        console.error('Error loading doctors:', error);
+      }
     };
     
-    loadAppointments();
+    loadDoctors();
   }, []);
 
   const [selectedAppointment, setSelectedAppointment] = useState(null);
