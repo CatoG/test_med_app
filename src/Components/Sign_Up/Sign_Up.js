@@ -11,7 +11,6 @@ const Sign_Up = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [showerr, setShowerr] = useState(""); // MUST always be a string
   const navigate = useNavigate(); // Navigation hook from react-router
 
   // Validation functions
@@ -31,61 +30,48 @@ const Sign_Up = () => {
     return passwordRegex.test(password);
   };
 
-  const validateForm = () => {
-    // Name validation
-    if (!name.trim()) {
-      setShowerr("Name is required");
-      return false;
-    }
-    if (name.trim().length < 2) {
-      setShowerr("Name must be at least 2 characters long");
-      return false;
-    }
-
-    // Email validation
-    if (!email.trim()) {
-      setShowerr("Email is required");
-      return false;
-    }
-    if (!validateEmail(email)) {
-      setShowerr("Please enter a valid email address");
-      return false;
-    }
-
-    // Phone validation
-    if (!phone.trim()) {
-      setShowerr("Phone number is required");
-      return false;
-    }
-    if (!validatePhone(phone)) {
-      setShowerr("Please enter a valid phone number (at least 8 digits)");
-      return false;
-    }
-
-    // Password validation
-    if (!password) {
-      setShowerr("Password is required");
-      return false;
-    }
-    if (password.length < 8) {
-      setShowerr("Password must be at least 8 characters long");
-      return false;
-    }
-    if (!validatePassword(password)) {
-      setShowerr("Password must contain at least one uppercase letter, one lowercase letter, and one number");
-      return false;
-    }
-
-    return true;
-  };
-
   // Function to handle form submission
   const register = async (e) => {
     e.preventDefault();
-    setShowerr("");
 
     // Validate form before submitting
-    if (!validateForm()) {
+    if (!name.trim()) {
+      alert("Name is required");
+      return;
+    }
+    if (name.trim().length < 2) {
+      alert("Name must be at least 2 characters long");
+      return;
+    }
+
+    if (!email.trim()) {
+      alert("Email is required");
+      return;
+    }
+    if (!validateEmail(email)) {
+      alert("Please enter a valid email address");
+      return;
+    }
+
+    if (!phone.trim()) {
+      alert("Phone number is required");
+      return;
+    }
+    if (!validatePhone(phone)) {
+      alert("Please enter a valid phone number (at least 8 digits)");
+      return;
+    }
+
+    if (!password) {
+      alert("Password is required");
+      return;
+    }
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long");
+      return;
+    }
+    if (!validatePassword(password)) {
+      alert("Password must contain at least one uppercase letter, one lowercase letter, and one number");
       return;
     }
 
@@ -104,7 +90,7 @@ const Sign_Up = () => {
         }),
       });
     } catch (err) {
-      setShowerr("Unable to connect to server.");
+      alert("Unable to connect to server.");
       return;
     }
 
@@ -115,7 +101,7 @@ const Sign_Up = () => {
     try {
       json = JSON.parse(text);
     } catch {
-      setShowerr("Server error. Invalid response format.");
+      alert("Server error. Invalid response format.");
       return;
     }
 
@@ -133,21 +119,20 @@ const Sign_Up = () => {
 
     // Error handling (NEVER store objects in state)
     if (Array.isArray(json.errors)) {
-      const messages = json.errors
-        .map((e) => (typeof e.msg === "string" ? e.msg : "Invalid input"))
-        .join(" | ");
-      setShowerr(messages);
+      for (const error of json.errors) {
+        alert(error.msg);
+      }
     } else if (typeof json.error === "string") {
-      setShowerr(json.error);
+      alert(json.error);
     } else {
-      setShowerr("Registration failed.");
+      alert("Registration failed.");
     }
   };
 
   // JSX to render the Sign Up form
   return (
     <>
-      <div className="container" style={{ marginTop: "5%" }}>
+      <div className="container" style={{ marginTop: "100px", marginLeft: "20px", marginRight: "20px" }}>
         <div className="signup-grid">
           <div className="signup-form">
             <form onSubmit={register} noValidate>
@@ -198,12 +183,6 @@ const Sign_Up = () => {
                   placeholder="Enter your password"
                 />
               </div>
-
-              {typeof showerr === "string" && showerr.length > 0 && (
-                <div className="err" style={{ color: "red" }}>
-                  {showerr}
-                </div>
-              )}
 
               <div className="btn-group">
                 <button type="submit" className="btn btn-submit">

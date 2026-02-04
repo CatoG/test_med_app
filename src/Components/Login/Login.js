@@ -60,7 +60,7 @@ const Login = () => {
 
   return (
     <div>
-      <div className="container">
+      <div className="container" style={{ marginTop: "100px", marginLeft: "20px", marginRight: "20px" }}>
         <div className="login-grid">
           <div className="login-text">
             <h2>Login</h2>
