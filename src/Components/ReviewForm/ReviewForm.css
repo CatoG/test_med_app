@@ -124,6 +124,23 @@
   border: 1px solid #c3e6cb;
 }
 
+/* Rating Display in Table */
+.rating-display {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+.star-display {
+  font-size: 18px;
+  color: #dee2e6;
+  user-select: none;
+}
+
+.star-display.filled {
+  color: #ff9800;
+}
+
 /* Feedback Form Styles */
 .feedback-form-container {
   margin-top: 20px;

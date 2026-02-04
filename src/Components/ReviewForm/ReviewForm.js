@@ -62,7 +62,7 @@ function GiveReviews() {
       setAppointmentHistory(prevHistory =>
         prevHistory.map(appointment =>
           appointment.id === selectedAppointment.id
-            ? { ...appointment, reviewed: true }
+            ? { ...appointment, reviewed: true, rating: formData.rating }
             : appointment
         )
       );
@@ -125,7 +125,16 @@ function GiveReviews() {
                   </td>
                   <td>
                     {appointment.reviewed ? (
-                      <span className="reviewed-message">Reviewed</span>
+                      <div className="rating-display">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <span
+                            key={star}
+                            className={`star-display ${appointment.rating >= star ? 'filled' : ''}`}
+                          >
+                            ★
+                          </span>
+                        ))}
+                      </div>
                     ) : (
                       <span className="not-reviewed">-</span>
                     )}
