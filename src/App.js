@@ -17,6 +17,7 @@ import Sign_Up from "./Components/Sign_Up/Sign_Up";
 import InstantConsultation from "./Components/InstantConsultationBooking/InstantConsultation";
 import BookingConsultation from "./Components/BookingConsultation";
 import ReviewForm from "./Components/ReviewForm/ReviewForm";
+import ReportsLayout from "./Components/ReportsLayout/ReportsLayout";
 
 // Function component for the main App
 function App() {
@@ -45,6 +46,9 @@ function App() {
 
           {/* Reviews route */}
           <Route path="/reviews" element={<ReviewForm />} />
+
+          {/* Reports route */}
+          <Route path="/reports" element={<ReportsLayout />} />
         </Routes>
       </Notification>
     </BrowserRouter>

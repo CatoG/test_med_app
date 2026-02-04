@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import ProfileCard from "../ProfileCard/ProfileCard";
@@ -6,7 +6,9 @@ import ProfileCard from "../ProfileCard/ProfileCard";
 function Navbar() {
   const [active, setActive] = useState(true);
   const [showProfile, setShowProfile] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate();
+  const dropdownRef = useRef(null);
 
   // Check login status from sessionStorage
   const token = sessionStorage.getItem("auth-token");
@@ -34,6 +36,34 @@ function Navbar() {
   const handleCloseProfile = () => {
     setShowProfile(false);
   };
+
+  const handleDropdownToggle = () => {
+    setShowDropdown(!showDropdown);
+  };
+
+  const handleProfileMenuClick = () => {
+    setShowProfile(true);
+    setShowDropdown(false);
+  };
+
+  const handleReportsClick = () => {
+    navigate('/reports');
+    setShowDropdown(false);
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div>
@@ -80,17 +110,34 @@ function Navbar() {
               </li>
             </>
           ) : (
-            /* If logged in: show username + logout */
-            <li className="link" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <span 
-                style={{ color: "#666", cursor: "pointer", textDecoration: "underline" }} 
-                onClick={handleProfileClick}
-              >
-                {userName}
-              </span>
-              <button className="btn-login" onClick={handleLogout}>
-                Logout
-              </button>
+            /* If logged in: show dropdown menu */
+            <li className="link user-menu" ref={dropdownRef}>
+              <div className="user-menu-container">
+                <span 
+                  className="user-name" 
+                  onClick={handleDropdownToggle}
+                >
+                  Welcome, {userName}
+                  <i className={`fa fa-chevron-down dropdown-icon ${showDropdown ? 'open' : ''}`}></i>
+                </span>
+                {showDropdown && (
+                  <div className="user-dropdown">
+                    <button className="dropdown-item" onClick={handleProfileMenuClick}>
+                      <i className="fa fa-user"></i>
+                      Your Profile
+                    </button>
+                    <button className="dropdown-item" onClick={handleReportsClick}>
+                      <i className="fa fa-file-text"></i>
+                      Your Reports
+                    </button>
+                    <div className="dropdown-divider"></div>
+                    <button className="dropdown-item logout-item" onClick={handleLogout}>
+                      <i className="fa fa-sign-out"></i>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
             </li>
           )}
         </ul>
