@@ -13,67 +13,9 @@ const Sign_Up = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate(); // Navigation hook from react-router
 
-  // Validation functions
-  const validateEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  const validatePhone = (phone) => {
-    const phoneRegex = /^\+?[\d\s-]{8,}$/;
-    return phoneRegex.test(phone);
-  };
-
-  const validatePassword = (password) => {
-    // At least 8 characters, one uppercase, one lowercase, one number
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    return passwordRegex.test(password);
-  };
-
   // Function to handle form submission
   const register = async (e) => {
     e.preventDefault();
-
-    // Validate form before submitting
-    if (!name.trim()) {
-      alert("Name is required");
-      return;
-    }
-    if (name.trim().length < 2) {
-      alert("Name must be at least 2 characters long");
-      return;
-    }
-
-    if (!email.trim()) {
-      alert("Email is required");
-      return;
-    }
-    if (!validateEmail(email)) {
-      alert("Please enter a valid email address");
-      return;
-    }
-
-    if (!phone.trim()) {
-      alert("Phone number is required");
-      return;
-    }
-    if (!validatePhone(phone)) {
-      alert("Please enter a valid phone number (at least 8 digits)");
-      return;
-    }
-
-    if (!password) {
-      alert("Password is required");
-      return;
-    }
-    if (password.length < 8) {
-      alert("Password must be at least 8 characters long");
-      return;
-    }
-    if (!validatePassword(password)) {
-      alert("Password must contain at least one uppercase letter, one lowercase letter, and one number");
-      return;
-    }
 
     let response;
     try {
@@ -135,7 +77,7 @@ const Sign_Up = () => {
       <div className="container" style={{ marginTop: "100px", marginLeft: "20px", marginRight: "20px" }}>
         <div className="signup-grid">
           <div className="signup-form">
-            <form onSubmit={register} noValidate>
+            <form onSubmit={register}>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
                 <input
@@ -145,6 +87,7 @@ const Sign_Up = () => {
                   id="email"
                   className="form-control"
                   placeholder="Enter your email"
+                  required
                 />
               </div>
 
@@ -157,6 +100,8 @@ const Sign_Up = () => {
                   id="name"
                   className="form-control"
                   placeholder="Enter your name"
+                  required
+                  minLength="2"
                 />
               </div>
 
@@ -169,6 +114,9 @@ const Sign_Up = () => {
                   id="phone"
                   className="form-control"
                   placeholder="Enter your phone number"
+                  required
+                  pattern="[\d\s\-\+]{8,}"
+                  title="Please enter a valid phone number (at least 8 digits)"
                 />
               </div>
 
@@ -181,6 +129,10 @@ const Sign_Up = () => {
                   id="password"
                   className="form-control"
                   placeholder="Enter your password"
+                  required
+                  minLength="8"
+                  pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}"
+                  title="Password must be at least 8 characters and contain uppercase, lowercase, and number"
                 />
               </div>
 

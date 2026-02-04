@@ -88,6 +88,7 @@ const Login = () => {
                   className="form-control"
                   placeholder="Enter your email"
                   aria-describedby="helpId"
+                  required
                 />
               </div>
 
@@ -103,6 +104,7 @@ const Login = () => {
                   className="form-control"
                   placeholder="Enter your password"
                   aria-describedby="helpId"
+                  required
                 />
               </div>
 
