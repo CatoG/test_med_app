@@ -53,7 +53,7 @@ function Navbar() {
           </li>
 
           <li className="link">
-            <a href="#">Reviews</a>
+            <Link to="/reviews">Reviews</Link>
           </li>
 
           {/* If NOT logged in */}
