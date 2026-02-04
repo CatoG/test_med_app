@@ -366,13 +366,3 @@
     gap: 4px;
   }
 }
-
-  .form-buttons {
-    flex-direction: column;
-  }
-
-  .submit-btn,
-  .cancel-btn {
-    width: 100%;
-  }
-}
