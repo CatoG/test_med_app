@@ -14,13 +14,8 @@ const ReportsLayout = () => {
   };
 
   const handleDownloadReport = (report, index) => {
-    // Download the existing PDF file
-    const link = document.createElement('a');
-    link.href = '/patient_report.pdf';
-    link.download = `Patient_Report_${index + 1}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    // Open the PDF file in a new window
+    window.open('/patient_report.pdf', '_blank');
   };
 
   return (
