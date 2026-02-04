@@ -1,5 +1,5 @@
 // Following code has been commented with appropriate comments for your reference.
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ReviewForm.css';
 
 // Function component for giving reviews
@@ -14,21 +14,32 @@ function GiveReviews() {
     rating: 0
   });
 
-  // Appointment history state
-  const [appointmentHistory, setAppointmentHistory] = useState([
-    {
-      id: 1,
-      doctorName: 'Dr. John Doe',
-      specialty: 'Cardiology',
-      reviewed: false
-    },
-    {
-      id: 2,
-      doctorName: 'Dr. Jane Smith',
-      specialty: 'Dermatology',
-      reviewed: false
+  // Appointment history state - Load from localStorage or use default
+  const [appointmentHistory, setAppointmentHistory] = useState(() => {
+    const saved = localStorage.getItem('appointmentHistory');
+    if (saved) {
+      return JSON.parse(saved);
     }
-  ]);
+    return [
+      {
+        id: 1,
+        doctorName: 'Dr. John Doe',
+        specialty: 'Cardiology',
+        reviewed: false
+      },
+      {
+        id: 2,
+        doctorName: 'Dr. Jane Smith',
+        specialty: 'Dermatology',
+        reviewed: false
+      }
+    ];
+  });
+
+  // Save appointmentHistory to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('appointmentHistory', JSON.stringify(appointmentHistory));
+  }, [appointmentHistory]);
 
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
