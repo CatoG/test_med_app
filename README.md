@@ -1,6 +1,5 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# IBM Frond-End Development Capstone Project: Helseappen
+This is the submission from CatoG.
 
 ## Available Scripts
 
