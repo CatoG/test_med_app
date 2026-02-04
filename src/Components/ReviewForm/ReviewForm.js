@@ -42,7 +42,7 @@ function GiveReviews() {
   };
 
   return (
-    <div>
+    <div style={{ marginTop: '100px', padding: '20px' }}>
       <h2>Form with Message</h2>
       {!showForm ? (
         // Display button to open the form
