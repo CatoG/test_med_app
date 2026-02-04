@@ -137,32 +137,49 @@ function GiveReviews() {
         </div>
       ) : (
         // Display form for giving feedback
-        <form onSubmit={handleSubmit}>
-          <h2>Give Your Feedback</h2>
+        <form onSubmit={handleSubmit} className="feedback-form">
+          <h2>Give Your Review</h2>
           {/* Display warning message if not all fields are filled */}
           {showWarning && <p className="warning">Please fill out all fields.</p>}
-          <div>
+          <div className="form-group">
             <label htmlFor="name">Name:</label>
-            <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} readOnly />
-          </div>
-          <div>
-            <label htmlFor="review">Review:</label>
-            <textarea id="review" name="review" value={formData.review} onChange={handleChange} />
-          </div>
-          <div>
-            <label htmlFor="rating">Rating:</label>
             <input 
-              type="number" 
-              id="rating" 
-              name="rating" 
-              value={formData.rating} 
-              onChange={handleChange}
-              min="1"
-              max="5"
+              type="text" 
+              id="name" 
+              name="name" 
+              value={formData.name} 
+              onChange={handleChange} 
+              readOnly 
+              className="form-input"
             />
           </div>
+          <div className="form-group">
+            <label htmlFor="review">Review:</label>
+            <textarea 
+              id="review" 
+              name="review" 
+              value={formData.review} 
+              onChange={handleChange}
+              className="form-textarea"
+              rows="4"
+            />
+          </div>
+          <div className="form-group">
+            <label>Rating:</label>
+            <div className="star-rating">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`star ${formData.rating >= star ? 'filled' : ''}`}
+                  onClick={() => setFormData({ ...formData, rating: star })}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
           {/* Submit button for form submission */}
-          <button type="submit">Submit</button>
+          <button type="submit" className="submit-btn">Submit</button>
         </form>
       )}
     </div>

@@ -98,9 +98,21 @@
 }
 
 .feedback-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.feedback-form h2 {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
 }
 
 .form-group {
@@ -117,12 +129,13 @@
 
 .form-input,
 .form-textarea {
-  padding: 10px 15px;
+  padding: 12px 15px;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 14px;
   font-family: inherit;
   transition: border-color 0.3s ease;
+  background-color: white;
 }
 
 .form-input:focus,
@@ -138,17 +151,17 @@
 
 .form-textarea {
   resize: vertical;
-  min-height: 100px;
+  min-height: 80px;
 }
 
-/* Rating Styles */
-.rating-container {
+/* Star Rating Styles */
+.star-rating {
   display: flex;
-  gap: 10px;
+  gap: 5px;
 }
 
 .star {
-  font-size: 32px;
+  font-size: 28px;
   color: #ddd;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -158,6 +171,20 @@
 .star:hover,
 .star.filled {
   color: #ffc107;
+}
+
+.star.filled {
+  color: #ff9800;
+}
+
+/* Warning message */
+.warning {
+  color: #dc3545;
+  background-color: #f8d7da;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin: 0;
 }
 
 /* Form Buttons */
@@ -179,12 +206,16 @@
 }
 
 .submit-btn {
-  background-color: #28a745;
+  background-color: #007bff;
   color: white;
+  width: 100%;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .submit-btn:hover {
-  background-color: #218838;
+  background-color: #0056b3;
 }
 
 .cancel-btn {
