@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
+import ProfileCard from "../ProfileCard/ProfileCard";
 
 function Navbar() {
   const [active, setActive] = useState(true);
+  const [showProfile, setShowProfile] = useState(false);
   const navigate = useNavigate();
 
   // Check login status from sessionStorage
@@ -23,6 +25,14 @@ function Navbar() {
 
     navigate("/");
     window.location.reload(); // keep it consistent with your signup flow
+  };
+
+  const handleProfileClick = () => {
+    setShowProfile(true);
+  };
+
+  const handleCloseProfile = () => {
+    setShowProfile(false);
   };
 
   return (
@@ -64,14 +74,22 @@ function Navbar() {
               </li>
 
               <li className="link">
-                <Link to="/login">
-                  <button className="btn-login">Login</button>
-                </Link>
-              </li>
-            </>
-          ) : (
-            /* If logged in: show username + logout */
-            <li className="link" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <Lin
+                style={{ color: "#666", cursor: "pointer", textDecoration: "underline" }} 
+                onClick={handleProfileClick}
+              >
+                {userName}
+              </span>
+              <button className="btn-login" onClick={handleLogout}>
+                Logout
+              </button>
+            </li>
+          )}
+        </ul>
+      </nav>
+      
+      {/* Show ProfileCard when user clicks on username */}
+      {showProfile && <ProfileCard onClose={handleCloseProfile} />}<li className="link" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
               <span style={{ color: "#666" }}>{userName}</span>
               <button className="btn-login" onClick={handleLogout}>
                 Logout
