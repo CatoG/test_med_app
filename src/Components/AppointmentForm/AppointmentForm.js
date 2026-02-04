@@ -27,7 +27,24 @@ const AppointmentForm = ({ doctorName, doctorSpeciality, onSubmit }) => {
   
     const handleFormSubmit = (e) => {
       e.preventDefault();
-      onSubmit({ name, phoneNumber, date, selectedSlot });
+      const appointmentData = { name, phoneNumber, date, selectedSlot };
+      onSubmit(appointmentData);
+      
+      // Save to shared appointments list
+      const appointments = JSON.parse(localStorage.getItem('allAppointments') || '[]');
+      const newAppointment = {
+        id: Date.now(),
+        doctorName,
+        doctorSpeciality,
+        patientName: name,
+        phoneNumber,
+        date,
+        timeSlot: selectedSlot,
+        reviewed: false
+      };
+      appointments.push(newAppointment);
+      localStorage.setItem('allAppointments', JSON.stringify(appointments));
+      
       setName('');
       setPhoneNumber('');
       setDate('');

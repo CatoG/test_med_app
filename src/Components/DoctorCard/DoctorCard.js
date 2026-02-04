@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
   const [showModal, setShowModal] = useState(false);
   const [appointments, setAppointments] = useState([]);
+  const [displayRating, setDisplayRating] = useState(ratings);
 
   // Load appointments from localStorage on component mount
   useEffect(() => {
@@ -16,6 +17,12 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
     if (storedAppointment) {
       const appointmentData = JSON.parse(storedAppointment);
       setAppointments([{ id: uuidv4(), ...appointmentData }]);
+    }
+    
+    // Load review rating if available
+    const reviewData = JSON.parse(localStorage.getItem('reviewData') || '{}');
+    if (reviewData[name] && reviewData[name].rating) {
+      setDisplayRating(reviewData[name].rating);
     }
   }, [name]);
 
@@ -62,7 +69,12 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
           <div className="doctor-card-detail-name">{name}</div>
           <div className="doctor-card-detail-speciality">{speciality}</div>
           <div className="doctor-card-detail-experience">{experience} years experience</div>
-          <div className="doctor-card-detail-consultationfees">Ratings: {ratings}</div>
+          <div className="doctor-card-detail-consultationfees">
+            Ratings: {displayRating} 
+            <span style={{ marginLeft: '5px', color: '#ff9800' }}>
+              {'★'.repeat(Math.floor(displayRating))}
+            </span>
+          </div>
         </div>
         {/* for reference  */}
         {/* <div>

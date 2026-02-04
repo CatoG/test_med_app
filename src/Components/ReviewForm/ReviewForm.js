@@ -14,32 +14,53 @@ function GiveReviews() {
     rating: 0
   });
 
-  // Appointment history state - Load from localStorage or use default
+  // Appointment history state - Load from localStorage
   const [appointmentHistory, setAppointmentHistory] = useState(() => {
-    const saved = localStorage.getItem('appointmentHistory');
-    if (saved) {
-      return JSON.parse(saved);
-    }
-    return [
-      {
-        id: 1,
-        doctorName: 'Dr. John Doe',
-        specialty: 'Cardiology',
-        reviewed: false
-      },
-      {
-        id: 2,
-        doctorName: 'Dr. Jane Smith',
-        specialty: 'Dermatology',
-        reviewed: false
+    const allAppointments = JSON.parse(localStorage.getItem('allAppointments') || '[]');
+    const reviewData = JSON.parse(localStorage.getItem('reviewData') || '{}');
+    
+    // Group by doctor to avoid duplicates
+    const doctorMap = new Map();
+    allAppointments.forEach(apt => {
+      if (!doctorMap.has(apt.doctorName)) {
+        doctorMap.set(apt.doctorName, {
+          id: apt.id,
+          doctorName: apt.doctorName,
+          specialty: apt.doctorSpeciality,
+          reviewed: reviewData[apt.doctorName]?.reviewed || false,
+          rating: reviewData[apt.doctorName]?.rating || 0
+        });
       }
-    ];
+    });
+    
+    return Array.from(doctorMap.values());
   });
 
-  // Save appointmentHistory to localStorage whenever it changes
+  // Reload appointments when component mounts or when returning to page
   useEffect(() => {
-    localStorage.setItem('appointmentHistory', JSON.stringify(appointmentHistory));
-  }, [appointmentHistory]);
+    const loadAppointments = () => {
+      const allAppointments = JSON.parse(localStorage.getItem('allAppointments') || '[]');
+      const reviewData = JSON.parse(localStorage.getItem('reviewData') || '{}');
+      
+      // Group by doctor to avoid duplicates
+      const doctorMap = new Map();
+      allAppointments.forEach(apt => {
+        if (!doctorMap.has(apt.doctorName)) {
+          doctorMap.set(apt.doctorName, {
+            id: apt.id,
+            doctorName: apt.doctorName,
+            specialty: apt.doctorSpeciality,
+            reviewed: reviewData[apt.doctorName]?.reviewed || false,
+            rating: reviewData[apt.doctorName]?.rating || 0
+          });
+        }
+      });
+      
+      setAppointmentHistory(Array.from(doctorMap.values()));
+    };
+    
+    loadAppointments();
+  }, []);
 
   const [selectedAppointment, setSelectedAppointment] = useState(null);
 
@@ -69,10 +90,20 @@ function GiveReviews() {
       setShowWarning(false);
       setSubmittedMessage(formData);
       
+      // Save review data to localStorage
+      const reviewData = JSON.parse(localStorage.getItem('reviewData') || '{}');
+      reviewData[selectedAppointment.doctorName] = {
+        reviewed: true,
+        rating: formData.rating,
+        review: formData.review,
+        patientName: formData.name
+      };
+      localStorage.setItem('reviewData', JSON.stringify(reviewData));
+      
       // Update the appointment as reviewed
       setAppointmentHistory(prevHistory =>
         prevHistory.map(appointment =>
-          appointment.id === selectedAppointment.id
+          appointment.doctorName === selectedAppointment.doctorName
             ? { ...appointment, reviewed: true, rating: formData.rating }
             : appointment
         )
