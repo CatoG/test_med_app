@@ -74,7 +74,15 @@ function Navbar() {
               </li>
 
               <li className="link">
-                <Lin
+                <Link to="/login">
+                  <button className="btn-login">Login</button>
+                </Link>
+              </li>
+            </>
+          ) : (
+            /* If logged in: show username + logout */
+            <li className="link" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+              <span 
                 style={{ color: "#666", cursor: "pointer", textDecoration: "underline" }} 
                 onClick={handleProfileClick}
               >
@@ -89,15 +97,12 @@ function Navbar() {
       </nav>
       
       {/* Show ProfileCard when user clicks on username */}
-      {showProfile && <ProfileCard onClose={handleCloseProfile} />}<li className="link" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <span style={{ color: "#666" }}>{userName}</span>
-              <button className="btn-login" onClick={handleLogout}>
-                Logout
-              </button>
-            </li>
-          )}
-        </ul>
-      </nav>
+      {showProfile && <ProfileCard onClose={handleCloseProfile} />}
+    </div>
+  );
+}
+
+export default Navbar;
     </div>
   );
 }
