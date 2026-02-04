@@ -103,8 +103,3 @@ function Navbar() {
 }
 
 export default Navbar;
-    </div>
-  );
-}
-
-export default Navbar;
