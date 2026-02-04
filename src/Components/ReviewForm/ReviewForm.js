@@ -114,12 +114,18 @@ function GiveReviews() {
                         Click Here
                       </button>
                     ) : (
-                      <span className="reviewed-text">-</span>
+                      <button 
+                        className="feedback-btn"
+                        disabled
+                        style={{ backgroundColor: '#ccc', cursor: 'not-allowed' }}
+                      >
+                        Click Here
+                      </button>
                     )}
                   </td>
                   <td>
                     {appointment.reviewed ? (
-                      <span className="reviewed-check">✓</span>
+                      <span className="reviewed-message">Reviewed</span>
                     ) : (
                       <span className="not-reviewed">-</span>
                     )}

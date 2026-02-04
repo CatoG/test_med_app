@@ -80,6 +80,12 @@
   font-weight: bold;
 }
 
+.reviewed-message {
+  color: #28a745;
+  font-weight: 600;
+  font-size: 14px;
+}
+
 /* Feedback Form Styles */
 .feedback-form-container {
   margin-top: 20px;
