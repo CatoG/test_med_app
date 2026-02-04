@@ -14,10 +14,80 @@ const Sign_Up = () => {
   const [showerr, setShowerr] = useState(""); // MUST always be a string
   const navigate = useNavigate(); // Navigation hook from react-router
 
+  // Validation functions
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const phoneRegex = /^\+?[\d\s-]{8,}$/;
+    return phoneRegex.test(phone);
+  };
+
+  const validatePassword = (password) => {
+    // At least 8 characters, one uppercase, one lowercase, one number
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    return passwordRegex.test(password);
+  };
+
+  const validateForm = () => {
+    // Name validation
+    if (!name.trim()) {
+      setShowerr("Name is required");
+      return false;
+    }
+    if (name.trim().length < 2) {
+      setShowerr("Name must be at least 2 characters long");
+      return false;
+    }
+
+    // Email validation
+    if (!email.trim()) {
+      setShowerr("Email is required");
+      return false;
+    }
+    if (!validateEmail(email)) {
+      setShowerr("Please enter a valid email address");
+      return false;
+    }
+
+    // Phone validation
+    if (!phone.trim()) {
+      setShowerr("Phone number is required");
+      return false;
+    }
+    if (!validatePhone(phone)) {
+      setShowerr("Please enter a valid phone number (at least 8 digits)");
+      return false;
+    }
+
+    // Password validation
+    if (!password) {
+      setShowerr("Password is required");
+      return false;
+    }
+    if (password.length < 8) {
+      setShowerr("Password must be at least 8 characters long");
+      return false;
+    }
+    if (!validatePassword(password)) {
+      setShowerr("Password must contain at least one uppercase letter, one lowercase letter, and one number");
+      return false;
+    }
+
+    return true;
+  };
+
   // Function to handle form submission
   const register = async (e) => {
     e.preventDefault();
     setShowerr("");
+
+    // Validate form before submitting
+    if (!validateForm()) {
+      return;
+    }
 
     let response;
     try {
